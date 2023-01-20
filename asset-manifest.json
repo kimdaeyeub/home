@@ -1,0 +1,11 @@
+{
+  "files": {
+    "main.js": "/home/static/js/main.ccf257f2.js",
+    "static/media/hearts.png": "/home/static/media/hearts.4f9c9a4ce51c931ead40.png",
+    "index.html": "/home/index.html",
+    "main.ccf257f2.js.map": "/home/static/js/main.ccf257f2.js.map"
+  },
+  "entrypoints": [
+    "static/js/main.ccf257f2.js"
+  ]
+}

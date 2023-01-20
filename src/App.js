@@ -1,25 +1,49 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from "react";
+import AppRouter from "./Router";
+import { useForm } from "react-hook-form";
+import { auth } from "./fbase.js";
+import { signInWithEmailAndPassword } from "firebase/auth";
 
-function App() {
+const App = () => {
+  const [loggedInUser, setLoggedInUser] = useState(null);
+  const { register, handleSubmit } = useForm();
+  const [error, setError] = useState();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  const onSubmit = (data) => {
+    signInWithEmailAndPassword(auth, data.email, data.password)
+      .then((userCredential) => {
+        // Signed in
+        const user = userCredential.user;
+        // ...
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        setError(error.message);
+      });
+  };
+
+  useEffect(() => {
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        setIsLoggedIn(true);
+        setLoggedInUser(user);
+      } else {
+        setIsLoggedIn(false);
+      }
+    });
+  }, []);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <AppRouter
+        loggedInUser={loggedInUser}
+        onSubmit={onSubmit}
+        register={register}
+        handleSubmit={handleSubmit}
+        isLoggedIn={isLoggedIn}
+      />
+    </>
   );
-}
+};
 
 export default App;
